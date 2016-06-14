@@ -1,0 +1,70 @@
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+<style type="text/css"> body {padding: 10px 30px 10px 30px;} table,th, td {text-align: center;} </style>
+
+
+Boats Segmentation: Factor Analysis
+========================================================
+
+**Team names**
+
+
+Business Decisions
+---------------------------------------------------------
+your text...
+
+
+The Data
+--------------------------------------------------------------
+
+
+your text...
+
+```{r echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+# let's make the data into data.matrix classes so that we can easier visualize them
+ProjectDataFactor = data.matrix(ProjectDataFactor)
+#ProjectData = data.matrix(ProjectData)
+```
+
+This is how the first `r min(max_data_report, nrow(ProjectData))` data looks:
+<br>
+
+<div class="row">
+<div class="col-md-6">
+```{r echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+show_data = data.frame(round(ProjectDataFactor,2))
+show_data = show_data[1:min(max_data_report,nrow(show_data)),]
+row<-rownames(show_data)
+dfnew<-cbind(row,show_data)
+change<-colnames(dfnew)
+change[1]<-"Variables"
+colnames (dfnew)<-change
+m1<-gvisTable(dfnew,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
+print(m1,'chart')
+```
+</div>
+</div>
+<br> <br>
+
+
+Our Approach
+---------------------------------------------------
+
+#### Factor Analysis in 6 steps
+
+1. Confirm the data in metric 
+
+2. Decide whether to scale or standardize the data
+
+3. Check the correlation matrix to see if Factor Analysis makes sense
+
+4. Develop a scree plot and decide on the number of factors to be derived
+
+5. Interpret the factors (consider factor rotations - technical but useful)
+
+6. Save factor scores for subsequent analyses
+
+Let's follow these steps.
+
+
+The data we use here have the following descriptive statistics: 
+
