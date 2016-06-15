@@ -2,25 +2,25 @@
 <style type="text/css"> body {padding: 10px 30px 10px 30px;} table,th, td {text-align: center;} </style>
 
 
-Boats Segmentation: Factor Analysis
+Financial Data Segmentation: Factor Analysis
 ========================================================
 
-**Team names**
-
+**Arina Bobrova, Dennis Maroulis, Tavleen Kaur, Ville Herlin**
+```{r echo=FALSE}
 #Temp comment to fix Knit HTML issue:
 #library(knitr)
 #knit2html("/Users/ArinaB/Documents/Arina MBA/INSEAD-16D/P3/Big Data Analytics/AnalyticsProject/doc/FinancialDataFactorAnalysis.Rmd")
+```
 
 Business Decisions
 ---------------------------------------------------------
-your text...
+Analyze the correlation between different companies in the Vietnamise stock market.
 
 
 The Data
 --------------------------------------------------------------
 
-
-your text...
+We analyze 900 companies based on 17 different variables including market cap, EBITDA, PE, e.t.c. listed in the vietnamise stock market
 
 ```{r echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
 # let's make the data into data.matrix classes so that we can easier visualize them
@@ -28,11 +28,11 @@ ProjectDataFactor = data.matrix(ProjectDataFactor)
 ProjectData = data.matrix(ProjectData)
 ```
 
-This is how the first 'r  min(max_data_report, nrow(ProjectData))' data looks:
+This is how the first `r  min(max_data_report, nrow(ProjectData))` data looks:
 <br>
 
 <div class="row">
-<div class="col-md-6">
+<div class="col-md-40">
 ```{r echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
 show_data = data.frame(round(ProjectDataFactor,2))
 show_data = show_data[1:min(max_data_report, nrow(ProjectData)),]
@@ -41,7 +41,7 @@ dfnew<-cbind(row,show_data)
 change<-colnames(dfnew)
 change[1]<-"Variables"
 colnames (dfnew)<-change
-m1<-gvisTable(dfnew,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
+m1<-gvisTable(dfnew,options=list(showRowNumber=TRUE,width=1920, height=min(400,27*(nrow(show_data)+1)),frozenColumns=1,allowHTML=TRUE,page='disable'))
 print(m1,'chart')
 ```
 </div>
@@ -71,7 +71,7 @@ Let's follow these steps.
 The data we use here have the following descriptive statistics: 
 
 <div class="row">
-<div class="col-md-6">
+<div class="col-md-40">
 ```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE,results='asis'}
 show_data = data.frame(round(my_summary(ProjectDataFactor),2))
 #show_data = show_data[1:min(max_data_report,nrow(show_data)),]
@@ -80,7 +80,7 @@ dfnew<-cbind(row,show_data)
 change<-colnames(dfnew)
 change[1]<-"Variables"
 colnames (dfnew)<-change
-m1<-gvisTable(dfnew,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
+m1<-gvisTable(dfnew,options=list(showRowNumber=TRUE,width=1920, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
 print(m1,'chart')
 ```
 </div>
@@ -88,20 +88,19 @@ print(m1,'chart')
 
 #### Step 2: Decide whether to scale or standardize the data
 
-
-your text...
+We scaled the data because of the different magnitude of the numbers in the data under consideration.
 
 ```{r, results='asis'}
 ProjectDatafactor_scaled=apply(ProjectDataFactor,2, function(r) {if (sd(r)!=0||is.na(r)==FALSE) res=(r-mean(r))/sd(r) else res=0*r; res})
 ```
 
-Notice now the summary statistics of the scaled dataset:
+Below is the summary statistics of the scaled dataset:
 
 <br>
 
 
 <div class="row">
-<div class="col-md-6">
+<div class="col-md-40">
 ```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE,results='asis'}
 
 show_data = data.frame(round(my_summary(ProjectDatafactor_scaled),2))
@@ -111,7 +110,7 @@ dfnew<-cbind(row,show_data)
 change<-colnames(dfnew)
 change[1]<-"Variables"
 colnames (dfnew)<-change
-m1<-gvisTable(dfnew,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
+m1<-gvisTable(dfnew,options=list(showRowNumber=TRUE,width=1920, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
 print(m1,'chart')
 ```
 </div>
@@ -124,9 +123,7 @@ As expected all variables have mean 0 and standard deviation 1.
 
 #### Step 3:  Check correlation matrix to see if Factor Analysis makes sense
 
-your text...
-
-This is the correlation matrix of the `r length(factor_attributes_used)` original variable we use for factor analysis (Note: this would be the same for the standardized ones if the standardization is done as above; there is a mathematical reason for this that we will not explore - you could confirm it yourself):
+This is the correlation matrix of the `r length(factor_attributes_used)` original variable we use for factor analysis. Some of the variables have strong correlations. The most obvious ones are between size meters such as revenue and value metrics such as market capitalization. Some interesting observations can be made from correlations alone. For instance dividend yield does not significantly affect valuation or depend on size. P/E does not depend on size. 
 
 ```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE, results='asis'}
 thecor = round(cor(ProjectDataFactor),2)
@@ -135,24 +132,17 @@ rownames(thecor)<-colnames(ProjectDataFactor)
 ## printing the result in a clean-slate table
 #cat(renderHeatmapX(thecor, border=1,center = 0,vrange_up = 1, vrange_down = 1))
 #cat(renderHeatmapX(thecor, border=1))
-#<<<<<<< HEAD
-#<<<<<<< HEAD
-#=======
 
-#>>>>>>> origin/master
-#=======
-
-#>>>>>>> InseadDataAnalytics/master
 show_data = data.frame(round(thecor,2))
+#show_data=cbind(rownames(thecor),show_data)
 m1<-gvisTable(show_data,options=list(width=1920, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE))
 print(m1,'chart')
 ```
 
-your text...
 
 #### Step 4. Develop a scree plot and decide on the number of factors to be derived
 
-your text...
+Based on the cumulative explained variance we use six components that explain 67% of the total variance.
 
 <br>
 
@@ -161,13 +151,13 @@ UnRotated_Results<-principal(ProjectDataFactor, nfactors=ncol(ProjectDataFactor)
 UnRotated_Factors<-round(UnRotated_Results$loadings,2)
 UnRotated_Factors<-as.data.frame(unclass(UnRotated_Factors))
 colnames(UnRotated_Factors)<-paste("Component",1:ncol(UnRotated_Factors),sep=" ")
-```
+#```
 
-```{r echo=FALSE, comment=NA, warning=FALSE, error=FALSE,message=FALSE,results='asis'}
+#```{r echo=FALSE, comment=NA, warning=FALSE, #error=FALSE,message=FALSE,results='asis'}
+#library("FactoMineR")
 Variance_Explained_Table_results<-PCA(ProjectDataFactor, graph=FALSE)
 Variance_Explained_Table<-Variance_Explained_Table_results$eig
 Variance_Explained_Table_copy<-Variance_Explained_Table
-
 
 row=1:nrow(Variance_Explained_Table)
 name<-paste("Component No:",row,sep="")
@@ -180,8 +170,6 @@ print(m,'chart')
 ```
 <br> <br>
 
-your text...
-
 
 ```{r Fig1, echo=FALSE, comment=NA, results='asis', message=FALSE, fig.align='center', fig=TRUE}
 
@@ -191,9 +179,6 @@ colnames(df) <- c("eigenvalues", "components", "abline")
 Line         <- gvisLineChart(as.data.frame(df), xvar="components", yvar=c("eigenvalues","abline"), options=list(title='Scree plot', legend="right", width=900, height=600, hAxis="{title:'Number of Components', titleTextStyle:{color:'black'}}", vAxes="[{title:'Eigenvalues'}]",  series="[{color:'green',pointSize:3, targetAxisIndex: 0}]"))
 print(Line, 'chart')
 ```
-
-
-your text...
 
 
 ```{r echo=FALSE, comment=NA, warning=FALSE,message=FALSE,results='asis'}
@@ -206,11 +191,9 @@ if (factor_selectionciterion == "manual")
 
 ```
 
-your text...
-
 #### 5. Interpret the factors 
 
-For our data, the `r factors_selected` selected factors look as follows after the `r rotation_used` rotation: 
+For our data, the selected factors look as follows after the rotation: 
 
 ```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE,results='asis'}
 
@@ -234,7 +217,9 @@ print(m1,'chart')
 ```
 <br> <br>
 
-To better visualize and interpret the factors we often "supress" loadings with small values, e.g. with absolute values smaller than `r MIN_VALUE`. In this case our factors look as follows after suppressing the small numbers:
+Component 1 mainly consists of size metrics from recent performance and value metrics. Component 2 has some more longer time size metrics. It Component 3 consists of two debt capacity metrics. Component 4 combines historical and current p/e ratios. Component 5 has two variables that measure the valuation in relation to performance. Component 6 groups two metrics of debt to assets.
+
+Components 1 and 2 have somewhat similar loadings because all the variables correlate strongly with each other. It might not make sense to use both of them.
 
 ```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE,results='asis'}
 Rotated_Factors_thres <- Rotated_Factors
@@ -254,18 +239,13 @@ print(m1,'chart')
 ```
 <br> <br>
 
-How would you interpret the selected factors?
-
-YOUR TEXT: INTERPRETATIONS AND ARGUMENTS FOR YOUR CHOICES..
 
 #### Step 6. Save factor scores for subsequent analyses
 
-
-For our data, using the rotated factors we selected, we can create a new dataset where our observations are as follows (for the first `r min(max_data_report,nrow(Rotated_Results$scores))` observations):
-
+For our data, using the rotated factors we selected, we can create a new dataset where our observations are as follows (for the first 50 companies):
 
 <div class="row">
-<div class="col-md-6">
+<div class="col-md-40">
 
 ```{r echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
 NEW_ProjectData <- round(Rotated_Results$scores[,1:factors_selected,drop=F],2)
@@ -280,7 +260,7 @@ if (factors_selected >=2){
   change<-colnames(dfnew)
   change[1]<-"Observation"
   colnames (dfnew)<-change
-  m1<-gvisTable(dfnew,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
+  m1<-gvisTable(dfnew,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(show_data)+1)),frozenColumns=1,allowHTML=TRUE,page='disable'))
   print(m1,'chart')
   
   } else {
@@ -291,35 +271,7 @@ if (factors_selected >=2){
 </div>
 <br> <br>
 
-Can you describe the observations using the new derived variables? How does each person perform for each of the selected factors?
-
-We now can replace our original data with the new ones and continue our analysis. For example, we can now visualize our original data using only the newly derived attributes. Here is the plot when we use only the top 2 factors:
-
-
-```{r Fig2, echo=FALSE, comment=NA, results='asis', message=FALSE, echo=FALSE, fig.align='center', fig=TRUE}
-
-if(ncol(NEW_ProjectData) >= 2) {
-  df1  <- cbind(NEW_ProjectData[, 1], NEW_ProjectData[, 2])
-  df1  <- as.data.frame(df1)
-  sca1 <- gvisScatterChart(df1, options=list(legend="none",
-                                             lineWidth=0, pointSize=8, hAxis.title="Derived Variable (Factor) 2",
-                                             title="Data Visualization Using the top 2 Derived Attributes (Factors)", vAxis="{title:'Derived Variable (Factor) 1'}",
-                                             hAxis="{title:'Derived Variable (Factor) 2'}", width=900, height=800))
-  print(sca1,'chart')
-  } else {
-    df2  <- cbind(NEW_ProjectData[, 1], ProjectData[, 1])
-    df2  <- as.data.frame(df2)
-    sca2 <- gvisScatterChart(df2, options=list(legend="none",
-                                               lineWidth=0, pointSize=12, hAxis.title="Derived Variable (Factor) 1",
-                                               title="Only 1 Derived Variable: Using Initial Variable", vAxis="{title:'Derived Variable (Factor) 1'}",
-                                               hAxis="{title:'Initial Variable (Factor) 1'}", width=900, height=800))
-    print(sca2,'chart')
-    }
-
-```
-
-
-Intepretation, Decisions and Conclusion
+Further Ideas
 ---------------------------------------------------------------
 
-**Till then...**
+This framework can be extended to work as a tool for screening companies. It would make sense to add a lot more variables. Then components can be compared with other markets to test hypothesis along the lines “does debt capacity matter more or less for valuation in these markets?” The framework can also be extended for back testing investment strategies. 

@@ -32,7 +32,7 @@ datafile_name="FinancialData" #  do not add .csv at the end! make sure the data 
 
 # Please ENTER then original raw attributes to use. 
 # Please use numbers, not column names! e.g. c(1:5, 7, 8) uses columns 1,2,3,4,5,7,8
-factor_attributes_used= c(4:20)
+factor_attributes_used=c(4:20)
 
 # Please ENTER the selection criterions for the factors to use. 
 # Choices: "eigenvalue", "variance", "manual"
@@ -55,7 +55,6 @@ MIN_VALUE=0.5
 # Please enter the maximum number of observations to show in the report and slides 
 # (DEFAULT is 50. If the number is large the report and slides may not be generated - very slow or will crash!!)
 max_data_report = 50 # can also chance in server.R
-
 
 ###########################
 # Would you like to also start a web application on YOUR LOCAL COMPUTER once the report and slides are generated?
